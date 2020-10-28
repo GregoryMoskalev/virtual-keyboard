@@ -13,63 +13,123 @@ const Keyboard = {
   properties: {
     value: '',
     capsLock: false,
-    shift: false
+    shift: false,
+    language: 0
   },
 
   keyLayout: [
-    [ '`', '~' ],
-    [ '1', '!' ],
-    [ '2', '@' ],
-    [ '3', '#' ],
-    [ '4', '$' ],
-    [ '5', '%' ],
-    [ '6', '^' ],
-    [ '7', '&' ],
-    [ '8', '*' ],
-    [ '9', '(' ],
-    [ '0', ')' ],
-    [ '-', '_' ],
-    [ '=', '+' ],
-    'backspace',
-    'q',
-    'w',
-    'e',
-    'r',
-    't',
-    'y',
-    'u',
-    'i',
-    'o',
-    'p',
-    [ '[', '{' ],
-    [ ']', '}' ],
-    [ '\\', '|' ],
-    'caps',
-    'a',
-    's',
-    'd',
-    'f',
-    'g',
-    'h',
-    'j',
-    'k',
-    'l',
-    [ ';', ':' ],
-    [ "'", '"' ],
-    'enter',
-    'shift',
-    'z',
-    'x',
-    'c',
-    'v',
-    'b',
-    'n',
-    'm',
-    ',',
-    '.',
-    '?',
-    'done',
-    'space'
+    [
+      [ '`', '~' ],
+      [ '1', '!' ],
+      [ '2', '@' ],
+      [ '3', '#' ],
+      [ '4', '$' ],
+      [ '5', '%' ],
+      [ '6', '^' ],
+      [ '7', '&' ],
+      [ '8', '*' ],
+      [ '9', '(' ],
+      [ '0', ')' ],
+      [ '-', '_' ],
+      [ '=', '+' ],
+      'backspace',
+      'q',
+      'w',
+      'e',
+      'r',
+      't',
+      'y',
+      'u',
+      'i',
+      'o',
+      'p',
+      [ '[', '{' ],
+      [ ']', '}' ],
+      [ '\\', '|' ],
+      'caps',
+      'a',
+      's',
+      'd',
+      'f',
+      'g',
+      'h',
+      'j',
+      'k',
+      'l',
+      [ ';', ':' ],
+      [ "'", '"' ],
+      'enter',
+      'shift',
+      'z',
+      'x',
+      'c',
+      'v',
+      'b',
+      'n',
+      'm',
+      ',',
+      '.',
+      '?',
+      'en',
+      'done',
+      'space'
+    ],
+    [
+      'ё',
+      [ '1', '!' ],
+      [ '2', '"' ],
+      [ '3', '№' ],
+      [ '4', ';' ],
+      [ '5', '%' ],
+      [ '6', ':' ],
+      [ '7', '?' ],
+      [ '8', '*' ],
+      [ '9', '(' ],
+      [ '0', ')' ],
+      [ '-', '_' ],
+      [ '=', '+' ],
+      'backspace',
+      'й',
+      'ц',
+      'у',
+      'к',
+      'е',
+      'н',
+      'г',
+      'ш',
+      'щ',
+      'з',
+      'х',
+      'ъ',
+      [ '\\', '|' ],
+      'caps',
+      'ф',
+      'ы',
+      'в',
+      'а',
+      'п',
+      'р',
+      'о',
+      'л',
+      'д',
+      'ж',
+      'э',
+      'enter',
+      'shift',
+      'я',
+      'ч',
+      'с',
+      'м',
+      'и',
+      'т',
+      'ь',
+      'б',
+      'ю',
+      [ '.', ',' ],
+      'ru',
+      'done',
+      'space'
+    ]
   ],
 
   init() {
@@ -103,6 +163,11 @@ const Keyboard = {
   },
 
   _createKeys() {
+    console.log(
+      'creating keys',
+      this.properties.language,
+      this.keyLayout[this.properties.language]
+    );
     const fragment = document.createDocumentFragment();
 
     // Creates HTML for an icon
@@ -110,8 +175,7 @@ const Keyboard = {
       return `<i class="material-icons">${icon_name}</i>`;
     };
 
-    this.keyLayout.forEach((key) => {
-      console.log(key[0]);
+    this.keyLayout[this.properties.language].forEach((key) => {
       const keyElement = document.createElement('button');
       const insertLineBreak =
         [ 'backspace', '\\', 'enter', '?' ].indexOf(Array.isArray(key) ? key[0] : key) !== -1;
@@ -119,8 +183,15 @@ const Keyboard = {
       // Add attributes/classes
       keyElement.setAttribute('type', 'button');
       keyElement.classList.add('keyboard__key');
-
       switch (key) {
+        case 'en':
+        case 'ru':
+          keyElement.textContent = key;
+          keyElement.addEventListener('click', () => {
+            this._changeLanguage();
+          });
+
+          break;
         case 'shift':
           keyElement.classList.add('keyboard__key--wide', 'keyboard__key--activatable', 'shift');
           keyElement.innerHTML = createIconHTML('keyboard_arrow_up');
@@ -240,20 +311,36 @@ const Keyboard = {
     }
   },
 
+  _changeLanguage() {
+    this.properties.language = (this.properties.language + 1) % this.keyLayout.length;
+    for (let index = 0; index < this.elements.keys.length; index++) {
+      const key = this.elements.keys[index];
+      if (key.childElementCount === 0) {
+        console.log('######', key.textContent);
+        key.textContent = Array.isArray(this.keyLayout[this.properties.language][index])
+          ? this.keyLayout[this.properties.language][index][0]
+          : this.keyLayout[this.properties.language][index];
+      }
+    }
+  },
+
   _toggleShift() {
     this.properties.shift = !this.properties.shift;
     let index = 0;
     for (const key of this.elements.keys) {
       if (key.childElementCount === 0) {
-        console.log(key.textContent, this.keyLayout[index]);
-        if (Array.isArray(this.keyLayout[index])) {
+        if (Array.isArray(this.keyLayout[this.properties.language][index])) {
           key.textContent = this.properties.shift
             ? (key.textContent = this.properties.capsLock
-                ? (key.textContent = this.keyLayout[index][1])
-                : (key.textContent = this.keyLayout[index][1]))
+                ? (key.textContent = this.keyLayout[this.properties.language][index][1])
+                : (key.textContent = this.keyLayout[this.properties.language][index][1]))
             : (key.textContent = this.properties.capsLock
-                ? (key.textContent = this.keyLayout[index][0].toLowerCase())
-                : (key.textContent = this.keyLayout[index][0].toLowerCase()));
+                ? (key.textContent = this.keyLayout[this.properties.language][
+                    index
+                  ][0].toLowerCase())
+                : (key.textContent = this.keyLayout[this.properties.language][
+                    index
+                  ][0].toLowerCase()));
 
           key.textContent = this.properties.shift
             ? (key.textContent = this.properties.capsLock
@@ -280,12 +367,10 @@ const Keyboard = {
                 : key.textContent.toLowerCase());
         }
 
-        // key.textContent = this.properties.shift
-        //   ? key.textContent.toUpperCase()
-        //   : key.textContent.toLowerCase();
       }
       index++;
     }
+    console.log(index);
   },
 
   _disableShift() {
@@ -302,15 +387,19 @@ const Keyboard = {
     this.properties.capsLock = !this.properties.capsLock;
     for (const key of this.elements.keys) {
       if (key.childElementCount === 0) {
-        console.log(key.textContent, this.keyLayout[index]);
-        if (Array.isArray(this.keyLayout[index])) {
+        console.log(key.textContent, this.keyLayout[this.properties.language][index]);
+        if (Array.isArray(this.keyLayout[this.properties.language][index])) {
           key.textContent = this.properties.shift
             ? (key.textContent = this.properties.capsLock
-                ? (key.textContent = this.keyLayout[index][1])
-                : (key.textContent = this.keyLayout[index][1]))
+                ? (key.textContent = this.keyLayout[this.properties.language][index][1])
+                : (key.textContent = this.keyLayout[this.properties.language][index][1]))
             : (key.textContent = this.properties.capsLock
-                ? (key.textContent = this.keyLayout[index][0].toLowerCase())
-                : (key.textContent = this.keyLayout[index][0].toLowerCase()));
+                ? (key.textContent = this.keyLayout[this.properties.language][
+                    index
+                  ][0].toLowerCase())
+                : (key.textContent = this.keyLayout[this.properties.language][
+                    index
+                  ][0].toLowerCase()));
 
           key.textContent = this.properties.shift
             ? (key.textContent = this.properties.capsLock
