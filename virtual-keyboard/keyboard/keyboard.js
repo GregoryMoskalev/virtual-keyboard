@@ -72,7 +72,9 @@ const Keyboard = {
       '?',
       'en',
       'done',
-      'space'
+      'space',
+      'leftArrow',
+      'rightArrow'
     ],
     [
       'ё',
@@ -128,7 +130,9 @@ const Keyboard = {
       [ '.', ',' ],
       'ru',
       'done',
-      'space'
+      'space',
+      'leftArrow',
+      'rightArrow'
     ]
   ],
 
@@ -152,7 +156,27 @@ const Keyboard = {
     document.querySelectorAll('.use-keyboard-input').forEach((element) => {
       element.addEventListener('focus', () => {
         this.open(element.value, (currentValue) => {
-          element.value = currentValue;
+          const cursor = element.selectionStart;
+          if (element.selectionStart < element.value.length) {
+            //TODO
+            console.log('!!!');
+            this.properties.value = `${this.properties.value.slice(0, cursor)}${currentValue.slice(
+              -1
+            )}${this.properties.value.slice(cursor, -1)}`;
+
+            element.value = currentValue = this.properties.value;
+            element.selectionStart = element.selectionEnd = cursor + 1;
+            console.log(
+              'currentv',
+              currentValue,
+              'elemval',
+              element.value,
+              'this.properties.value',
+              this.properties.value
+            );
+          } else {
+            element.value = currentValue;
+          }
         });
       });
     });
@@ -184,6 +208,14 @@ const Keyboard = {
       keyElement.setAttribute('type', 'button');
       keyElement.classList.add('keyboard__key');
       switch (key) {
+        case 'leftArrow':
+          keyElement.innerHTML = createIconHTML('keyboard_arrow_left');
+          keyElement.addEventListener('click', this._leftArrow);
+          break;
+        case 'rightArrow':
+          keyElement.innerHTML = createIconHTML('keyboard_arrow_right');
+          keyElement.addEventListener('click', this._rightArrow);
+          break;
         case 'en':
         case 'ru':
           keyElement.textContent = key;
@@ -208,12 +240,7 @@ const Keyboard = {
 
           keyElement.addEventListener('click', () => {
             this._disableShift();
-
-            this.properties.value = this.properties.value.substring(
-              0,
-              this.properties.value.length - 1
-            );
-            this._triggerEvent('oninput');
+            this._handleBackspace();
           });
 
           break;
@@ -311,6 +338,46 @@ const Keyboard = {
     }
   },
 
+  _handleBackspace() {
+    const element = document.activeElement;
+    const cursor = element.selectionStart;
+    const left = this.properties.value.substring(0, element.selectionStart - 1);
+    const right = this.properties.value.slice(cursor);
+
+    if (element.selectionStart < element.value.length) {
+      element.value = this.properties.value = `${left}${right}`;
+
+      element.selectionStart = element.selectionEnd = cursor - 1;
+
+      // this._triggerEvent('oninput');
+    } else {
+      element.value = this.properties.value = this.properties.value.substring(
+        0,
+        this.properties.value.length - 1
+      );
+      // this._triggerEvent('oninput');
+    }
+    //################
+    console.log('elemval', element.value, 'this.properties.value', this.properties.value);
+  },
+
+  _leftArrow() {
+    if (document.activeElement.selectionStart > 0) {
+      document.activeElement.selectionEnd--;
+      document.activeElement.selectionStart = document.activeElement.selectionEnd;
+    }
+    console.log(document.activeElement.selectionStart, document.activeElement.selectionEnd);
+  },
+
+  _rightArrow() {
+    if (document.activeElement.selectionStart < document.activeElement.value.length) {
+      document.activeElement.selectionEnd++;
+      document.activeElement.selectionStart = document.activeElement.selectionEnd;
+    }
+
+    console.log(document.activeElement.selectionStart, document.activeElement.selectionEnd);
+  },
+
   _changeLanguage() {
     this.properties.language = (this.properties.language + 1) % this.keyLayout.length;
     for (let index = 0; index < this.elements.keys.length; index++) {
@@ -366,7 +433,6 @@ const Keyboard = {
                 ? key.textContent.toUpperCase()
                 : key.textContent.toLowerCase());
         }
-
       }
       index++;
     }
