@@ -158,22 +158,12 @@ const Keyboard = {
         this.open(element.value, (currentValue) => {
           const cursor = element.selectionStart;
           if (element.selectionStart < element.value.length) {
-            //TODO
-            console.log('!!!');
             this.properties.value = `${this.properties.value.slice(0, cursor)}${currentValue.slice(
               -1
             )}${this.properties.value.slice(cursor, -1)}`;
 
             element.value = currentValue = this.properties.value;
             element.selectionStart = element.selectionEnd = cursor + 1;
-            console.log(
-              'currentv',
-              currentValue,
-              'elemval',
-              element.value,
-              'this.properties.value',
-              this.properties.value
-            );
           } else {
             element.value = currentValue;
           }
@@ -186,18 +176,13 @@ const Keyboard = {
     });
 
     document.addEventListener('keydown', (evt) => {
-      // console.log(evt, this.properties.value);
-      // this.properties.value += evt.key;
-      // this._triggerEvent('oninput');
+      if (!evt.key[1]) {
+        this.properties.value = document.activeElement.value;
+      }
     });
   },
 
   _createKeys() {
-    console.log(
-      'creating keys',
-      this.properties.language,
-      this.keyLayout[this.properties.language]
-    );
     const fragment = document.createDocumentFragment();
 
     // Creates HTML for an icon
@@ -363,8 +348,6 @@ const Keyboard = {
       );
       // this._triggerEvent('oninput');
     }
-    //################
-    console.log('elemval', element.value, 'this.properties.value', this.properties.value);
   },
 
   _leftArrow() {
@@ -388,7 +371,6 @@ const Keyboard = {
     for (let index = 0; index < this.elements.keys.length; index++) {
       const key = this.elements.keys[index];
       if (key.childElementCount === 0) {
-        console.log('######', key.textContent);
         key.textContent = Array.isArray(this.keyLayout[this.properties.language][index])
           ? this.keyLayout[this.properties.language][index][0]
           : this.keyLayout[this.properties.language][index];
@@ -397,7 +379,6 @@ const Keyboard = {
   },
 
   _toggleShift() {
-    console.log(this);
     this.properties.shift = !this.properties.shift;
     let index = 0;
     for (const key of this.elements.keys) {
@@ -442,7 +423,6 @@ const Keyboard = {
       }
       index++;
     }
-    console.log(index);
   },
 
   _disableShift() {
@@ -459,7 +439,6 @@ const Keyboard = {
     this.properties.capsLock = !this.properties.capsLock;
     for (const key of this.elements.keys) {
       if (key.childElementCount === 0) {
-        console.log(key.textContent, this.keyLayout[this.properties.language][index]);
         if (Array.isArray(this.keyLayout[this.properties.language][index])) {
           key.textContent = this.properties.shift
             ? (key.textContent = this.properties.capsLock
@@ -536,3 +515,8 @@ const Keyboard = {
 window.addEventListener('DOMContentLoaded', function() {
   Keyboard.init();
 });
+
+console.log(
+  '%c+',
+  'font-size: 1px; padding: 150px 200px; line-height: 0; background: url("https://mind-exchange.com/app/media/2015/05/kung-fury-hacker.jpeg"); background-size: 454px 302px; color: transparent;'
+);
