@@ -180,9 +180,15 @@ const Keyboard = {
         });
       });
     });
-    //stop losing focus after click on keyboard
+    // stop losing focus after click on keyboard
     document.querySelector('.keyboard').addEventListener('mousedown', (e) => {
       e.preventDefault();
+    });
+
+    document.addEventListener('keydown', (evt) => {
+      // console.log(evt, this.properties.value);
+      // this.properties.value += evt.key;
+      // this._triggerEvent('oninput');
     });
   },
 
@@ -210,11 +216,11 @@ const Keyboard = {
       switch (key) {
         case 'leftArrow':
           keyElement.innerHTML = createIconHTML('keyboard_arrow_left');
-          keyElement.addEventListener('click', this._leftArrow);
+          keyElement.addEventListener('click', () => this._leftArrow());
           break;
         case 'rightArrow':
           keyElement.innerHTML = createIconHTML('keyboard_arrow_right');
-          keyElement.addEventListener('click', this._rightArrow);
+          keyElement.addEventListener('click', () => this._rightArrow());
           break;
         case 'en':
         case 'ru':
@@ -362,20 +368,19 @@ const Keyboard = {
   },
 
   _leftArrow() {
-    if (document.activeElement.selectionStart > 0) {
-      document.activeElement.selectionEnd--;
-      document.activeElement.selectionStart = document.activeElement.selectionEnd;
+    if (this.properties.shift) {
+      document.activeElement.selectionStart--;
+    } else {
+      document.activeElement.selectionEnd = document.activeElement.selectionStart -= 1;
     }
-    console.log(document.activeElement.selectionStart, document.activeElement.selectionEnd);
   },
 
   _rightArrow() {
-    if (document.activeElement.selectionStart < document.activeElement.value.length) {
+    if (this.properties.shift) {
       document.activeElement.selectionEnd++;
-      document.activeElement.selectionStart = document.activeElement.selectionEnd;
+    } else {
+      document.activeElement.selectionEnd = document.activeElement.selectionStart += 1;
     }
-
-    console.log(document.activeElement.selectionStart, document.activeElement.selectionEnd);
   },
 
   _changeLanguage() {
@@ -392,6 +397,7 @@ const Keyboard = {
   },
 
   _toggleShift() {
+    console.log(this);
     this.properties.shift = !this.properties.shift;
     let index = 0;
     for (const key of this.elements.keys) {
