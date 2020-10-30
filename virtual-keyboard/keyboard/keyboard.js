@@ -582,5 +582,5 @@ window.addEventListener('DOMContentLoaded', function() {
 
 console.log(
   '%c+',
-  'font-size: 1px; padding: 150px 200px; line-height: 0; background: url("https://mind-exchange.com/app/media/2015/05/kung-fury-hacker.jpeg"); background-size: 454px 302px; color: transparent;'
+  'font-size: 1px; padding: 160px 143px; line-height: 0; background: url("https://sun9-74.userapi.com/DjoL4F6_RqFFChpuQf3kkQ36MyEMfr2zJUgj1A/5ua4Ga3dykI.jpg"); background-size: 289px 385px; color: transparent;'
 );
