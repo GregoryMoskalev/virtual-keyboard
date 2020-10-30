@@ -68,9 +68,9 @@ const Keyboard = {
       'b',
       'n',
       'm',
-      ',',
-      '.',
-      '?',
+      [ ',', '<' ],
+      [ '.', '>' ],
+      [ '/', '?' ],
       'en',
       'done',
       'space',
@@ -252,7 +252,7 @@ const Keyboard = {
           document.querySelector('.tab').classList.remove('active');
           break;
         case 'Shift':
-            document.querySelector('.shift').classList.remove('active');
+          document.querySelector('.shift').classList.remove('active');
           break;
         case 'CapsLock':
           document.querySelector('.caps').classList.remove('active');
@@ -285,7 +285,7 @@ const Keyboard = {
     this.keyLayout[this.properties.language].forEach((key, index) => {
       const keyElement = document.createElement('button');
       const insertLineBreak =
-        [ 'backspace', '\\', 'enter', '?' ].indexOf(Array.isArray(key) ? key[0] : key) !== -1;
+        [ 'backspace', '\\', 'enter', '/' ].indexOf(Array.isArray(key) ? key[0] : key) !== -1;
 
       // Add attributes/classes
       keyElement.setAttribute('type', 'button');
