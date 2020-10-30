@@ -17,6 +17,8 @@
 .keyboard__keys {
   text-align: center;
 }
+@media screen and (max-width: 540px) {
+}
 
 .keyboard__key {
   height: 45px;
@@ -39,16 +41,38 @@
   position: relative;
 }
 
+@media screen and (max-width: 540px) {
+  .keyboard__key {
+    height: 35px;
+    width: 5%;
+  }
+}
+
 .keyboard__key:active {
-  background: rgba(208, 208, 194, 0.7);
+  background: rgba(238, 238, 238, 0.8);
+}
+
+@media screen and (max-width: 800px) {
 }
 
 .active {
-  background: rgba(208, 208, 194, 0.5);
+  background: rgba(238, 238, 238, 0.8);
 }
 
 .keyboard__key--wide {
   width: 12%;
+}
+
+@media screen and (max-width: 800px) {
+  .keyboard__key--wide {
+    width: 8%;
+  }
+}
+
+@media screen and (max-width: 610px) {
+  .keyboard__key--wide {
+    width: 6%;
+  }
 }
 
 .keyboard__key--extra-wide {
@@ -67,6 +91,13 @@
   border-radius: 50%;
 }
 
+@media screen and (max-width: 610px) {
+  .keyboard__key--activatable::after {
+    top: 2px;
+    right: 2px;
+  }
+}
+
 .keyboard__key--active::after {
   background: #ff5722;
 }
@@ -78,4 +109,7 @@
 
 .backspace {
   background: #ff5722;
+}
+
+.shift {
 }
