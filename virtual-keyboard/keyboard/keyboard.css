@@ -46,6 +46,29 @@
   .keyboard__key {
     height: 35px;
     width: 5%;
+    border-radius: 4px;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .keyboard__key {
+    margin: 2px;
+    font-size: 15px;
+    height: 20px;
+    width: 5.5%;
+  }
+}
+@media screen and (max-height: 330px) {
+  .keyboard__key {
+    height: 18px;
+    font-size: 15px;
+    padding-bottom: 1px;
+    margin: 1px;
+  }
+}
+@media screen and (max-height: 400px), screen and (max-width: 540px) {
+  .material-icons {
+    font-size: 17px !important;
   }
 }
 
@@ -97,6 +120,13 @@
   .keyboard__key--activatable::after {
     top: 2px;
     right: 2px;
+  }
+}
+
+@media screen and (max-height: 400px), screen and (max-width: 540px) {
+  .keyboard__key--activatable::after {
+    width: 6px;
+    height: 6px;
   }
 }
 
