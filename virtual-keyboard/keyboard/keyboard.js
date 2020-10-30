@@ -199,28 +199,75 @@ const Keyboard = {
 
     //#####################
     document.addEventListener('keydown', (evt) => {
+      if ((evt.shiftKey && evt.ctrlKey) || evt.altKey) {
+        document.querySelector('.language').classList.add('active');
+        this._changeLanguage();
+      }
+    });
+    document.addEventListener('keyup', (evt) => {
+      if (evt.shiftKey || evt.ctrlKey || evt.altKey) {
+        document.querySelector('.language').classList.remove('active');
+      }
+    });
+    document.addEventListener('keydown', (evt) => {
+      console.log(evt.key);
       switch (evt.key) {
         case 'Tab':
           evt.preventDefault();
+          document.querySelector('.tab').classList.add('active');
           this.properties.value += '	';
           this._triggerEvent('oninput');
           break;
         case 'Shift':
-          this._toggleShift();
-          document
-            .querySelector('.shift')
-            .classList.toggle('keyboard__key--active', this.properties.shift);
+          if (!evt.ctrlKey && !evt.altKey) {
+            document.querySelector('.shift').classList.toggle('keyboard__key--active');
+            document.querySelector('.shift').classList.add('active');
+            this._toggleShift();
+          }
           break;
         case 'CapsLock':
           this._toggleCapsLock();
-          document
-            .querySelector('.caps')
-            .classList.toggle('keyboard__key--active', this.properties.capsLock);
+          document.querySelector('.caps').classList.toggle('keyboard__key--active');
+          document.querySelector('.caps').classList.add('active');
           break;
         case 'Backspace':
-          document.querySelector('.backspace').classList.toggle('active');
+          document.querySelector('.backspace').classList.add('active');
           break;
         case 'Enter':
+          document.querySelector('.enter').classList.add('active');
+          break;
+        case 'ArrowLeft':
+          document.querySelector('.arrowLeft').classList.add('active');
+          break;
+        case 'ArrowRight':
+          document.querySelector('.arrowRight').classList.add('active');
+          break;
+      }
+    });
+    document.addEventListener('keyup', (evt) => {
+      console.log(evt.key);
+      switch (evt.key) {
+        case 'Tab':
+          evt.preventDefault();
+          document.querySelector('.tab').classList.remove('active');
+          break;
+        case 'Shift':
+            document.querySelector('.shift').classList.remove('active');
+          break;
+        case 'CapsLock':
+          document.querySelector('.caps').classList.remove('active');
+          break;
+        case 'Backspace':
+          document.querySelector('.backspace').classList.remove('active');
+          break;
+        case 'Enter':
+          document.querySelector('.enter').classList.remove('active');
+          break;
+        case 'ArrowLeft':
+          document.querySelector('.arrowLeft').classList.remove('active');
+          break;
+        case 'ArrowRight':
+          document.querySelector('.arrowRight').classList.remove('active');
           break;
       }
     });
