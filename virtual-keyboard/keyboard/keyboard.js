@@ -338,7 +338,7 @@ const Keyboard = {
           break;
 
         default:
-          let element = this.keyLayout[this.properties.language][index];
+          // let element = this.keyLayout[this.properties.language][index];
           // if (Array.isArray(key)) {
           keyElement.textContent = key[0].toLowerCase();
 
