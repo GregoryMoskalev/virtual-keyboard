@@ -180,9 +180,22 @@ const Keyboard = {
 
     document.addEventListener('keyup', (evt) => {
       document.querySelectorAll('.keyboard__key').forEach((button) => {
-        if (button.innerHTML == evt.key) {
+        if (button.innerHTML.toLowerCase() == evt.key.toLowerCase()) {
           button.classList.remove('active');
-        }
+        } else if (this.properties.shift) {
+          this.keyLayout[this.properties.language].forEach((key, index) => {
+            if (key[1] === evt.key || key[0] === evt.key)
+              this.elements.keys[index].classList.remove('active');
+          });
+        } 
+        // else if (this.properties.shift) {
+        //   this.keyLayout[
+        //     (this.properties.language + 1) % this.keyLayout.length
+        //   ].forEach((key, index) => {
+        //     if (key[1] === evt.key || key[0] === evt.key)
+        //       this.elements.keys[index].classList.remove('active');
+        //   });
+        // }
       });
       if (!evt.key[1]) {
         this.properties.value = document.activeElement.value;
@@ -190,10 +203,25 @@ const Keyboard = {
     });
 
     document.addEventListener('keydown', (evt) => {
+      console.log(evt.key.toLowerCase());
+      // window.speechSynthesis.speak(new SpeechSynthesisUtterance(evt.key));
       document.querySelectorAll('.keyboard__key').forEach((button) => {
-        if (button.innerHTML == evt.key) {
+        if (button.innerHTML.toLowerCase() == evt.key.toLowerCase()) {
           button.classList.add('active');
-        }
+        } else if (this.properties.shift) {
+          this.keyLayout[this.properties.language].forEach((key, index) => {
+            if (key[1] === evt.key || key[0] === evt.key)
+              this.elements.keys[index].classList.add('active');
+          });
+        } 
+        // else if (this.properties.shift) {
+        //   this.keyLayout[
+        //     (this.properties.language + 1) % this.keyLayout.length
+        //   ].forEach((key, index) => {
+        //     if (key[1] === evt.key || key[0] === evt.key)
+        //       this.elements.keys[index].classList.add('active');
+        //   });
+        // }
       });
     });
 
@@ -405,6 +433,7 @@ const Keyboard = {
           // keyElement.textContent = key.toLowerCase();
 
           keyElement.addEventListener('click', () => {
+            // new Audio('../../assets/.wav').play();
             this.properties.value += this.properties.capsLock
               ? (keyElement.textContent = this.properties.shift
                   ? keyElement.textContent.toLowerCase()
