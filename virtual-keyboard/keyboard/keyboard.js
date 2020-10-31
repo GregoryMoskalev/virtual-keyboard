@@ -215,7 +215,6 @@ const Keyboard = {
         .map((result) => result[0])
         .map((result) => result.transcript)
         .join('');
-
     });
 
     this.elements.record.addEventListener('end', () => {
@@ -258,7 +257,6 @@ const Keyboard = {
               this.elements.keys[index].classList.add('active');
           });
         }
-
       });
     });
 
@@ -447,8 +445,10 @@ const Keyboard = {
           keyElement.classList.add('tab');
           keyElement.innerHTML = createIconHTML('keyboard_tab');
           keyElement.addEventListener('click', () => {
-            this.elements.sounds.tab.currentTime = 0;
-            this.elements.sounds.tab.play();
+            if (this.properties.sound) {
+              this.elements.sounds.tab.currentTime = 0;
+              this.elements.sounds.tab.play();
+            }
             this.properties.value += '	';
             this._triggerEvent('oninput');
           });
@@ -536,7 +536,6 @@ const Keyboard = {
           break;
 
         default:
-
           keyElement.textContent = key[0].toLowerCase();
 
           keyElement.addEventListener('click', () => {
@@ -588,7 +587,6 @@ const Keyboard = {
         0,
         this.properties.value.length - 1
       );
-
     }
   },
 
@@ -656,7 +654,6 @@ const Keyboard = {
                 : (key.textContent = this.keyLayout[this.properties.language][
                     index
                   ][0].toLowerCase()));
-
         } else {
           key.textContent = this.properties.shift
             ? (key.textContent = this.properties.capsLock
@@ -665,7 +662,6 @@ const Keyboard = {
             : (key.textContent = this.properties.capsLock
                 ? key.textContent.toUpperCase()
                 : key.textContent.toLowerCase());
-
         }
       }
       index++;
@@ -714,13 +710,10 @@ const Keyboard = {
             : (key.textContent = this.properties.capsLock
                 ? key.textContent.toUpperCase()
                 : key.textContent.toLowerCase());
-
         }
-
       }
       index++;
     }
-
   },
 
   open(initialValue, oninput, onclose) {
@@ -754,4 +747,3 @@ console.log('space-FA');
 console.log('enter-SOL');
 console.log('backspace-LA');
 console.log('tab-SI');
-
