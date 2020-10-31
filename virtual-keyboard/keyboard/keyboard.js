@@ -27,6 +27,7 @@ const Keyboard = {
     value: '',
     capsLock: false,
     shift: false,
+    shiftPressed: false,
     language: 0,
     sound: true,
     mic: false
@@ -285,7 +286,8 @@ const Keyboard = {
           this._triggerEvent('oninput');
           break;
         case 'Shift':
-          if (!evt.ctrlKey && !evt.altKey) {
+          if (!evt.ctrlKey && !evt.altKey && !this.properties.shiftPressed) {
+            this.properties.shiftPressed = true;
             document.querySelector('.shift').classList.toggle('keyboard__key--active');
             document.querySelector('.shift').classList.add('active');
             this._toggleShift();
@@ -345,6 +347,10 @@ const Keyboard = {
           break;
         case 'Shift':
           document.querySelector('.shift').classList.remove('active');
+          this.properties.shiftPressed = false;
+          this._toggleShift();
+          document.querySelector('.shift').classList.toggle('keyboard__key--active');
+
           break;
         case 'CapsLock':
           document.querySelector('.caps').classList.remove('active');
@@ -633,10 +639,6 @@ const Keyboard = {
   },
 
   _toggleShift() {
-    if (this.properties.sound) {
-      this.elements.sounds.shift.currentTime = 0;
-      this.elements.sounds.shift.play();
-    }
 
     this.properties.shift = !this.properties.shift;
     let index = 0;
@@ -665,6 +667,11 @@ const Keyboard = {
         }
       }
       index++;
+    }
+
+    if (this.properties.sound && this.properties.shift) {
+      this.elements.sounds.shift.currentTime = 0;
+      this.elements.sounds.shift.play();
     }
   },
 
