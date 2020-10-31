@@ -1,3 +1,4 @@
+window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const Keyboard = {
   elements: {
     main: null,
@@ -13,7 +14,8 @@ const Keyboard = {
       arrowLeft: null,
       arrowRight: null,
       letters: [ null, null ]
-    }
+    },
+    record: null
   },
 
   eventHandlers: {
@@ -26,7 +28,8 @@ const Keyboard = {
     capsLock: false,
     shift: false,
     language: 0,
-    sound: true
+    sound: true,
+    mic: false
   },
 
   keyLayout: [
@@ -88,7 +91,8 @@ const Keyboard = {
       'space',
       'arrowLeft',
       'arrowRight',
-      'sound'
+      'sound',
+      'mic'
     ],
     [
       'ё',
@@ -148,11 +152,15 @@ const Keyboard = {
       'space',
       'arrowLeft',
       'arrowRight',
-      'sound'
+      'sound',
+      'mic'
     ]
   ],
 
   init() {
+    this.elements.record = new SpeechRecognition();
+
+    this.elements.record.interimResults = true;
     this.elements.sounds.tab = new Audio('../../assets/si.mp3');
     this.elements.sounds.caps = new Audio('../../assets/re.mp3');
     this.elements.sounds.shift = new Audio('../../assets/mi.mp3');
@@ -199,6 +207,24 @@ const Keyboard = {
     // stop losing focus after click on keyboard
     document.querySelector('.keyboard').addEventListener('mousedown', (e) => {
       e.preventDefault();
+    });
+
+    let text = [];
+    this.elements.record.addEventListener('result', (evt) => {
+      text = Array.from(evt.results)
+        .map((result) => result[0])
+        .map((result) => result.transcript)
+        .join('');
+      console.log(text);
+    });
+
+    this.elements.record.addEventListener('end', () => {
+      document.querySelector('.use-keyboard-input').value = this.properties.value += text;
+      text = [];
+      if (this.properties.mic) {
+        this.elements.record.lang = this.properties.language ? 'ru-RU' : 'en-US';
+        this.elements.record.start();
+      }
     });
 
     document.addEventListener('keyup', (evt) => {
@@ -379,6 +405,15 @@ const Keyboard = {
       keyElement.setAttribute('type', 'button');
       keyElement.classList.add('keyboard__key');
       switch (key) {
+        case 'mic':
+          keyElement.classList.add('keyboard__key--wide', 'keyboard__key--activatable');
+          keyElement.innerHTML = createIconHTML('mic');
+
+          keyElement.addEventListener('click', () => {
+            this._toggleMic();
+            keyElement.classList.toggle('keyboard__key--active', this.properties.mic);
+          });
+          break;
         case 'sound':
           keyElement.classList.add(
             'keyboard__key--wide',
@@ -592,6 +627,15 @@ const Keyboard = {
     }
   },
 
+  _toggleMic() {
+    this.properties.mic = !this.properties.mic;
+    if (this.properties.mic) {
+      this.elements.record.lang = this.properties.language ? 'ru-RU' : 'en-US';
+      this.elements.record.start();
+    } else {
+      this.elements.record.stop();
+    }
+  },
   _toggleSound() {
     this.properties.sound = !this.properties.sound;
   },
@@ -622,6 +666,7 @@ const Keyboard = {
           : this.keyLayout[this.properties.language][index];
       }
     }
+    this.elements.record.stop();
   },
 
   _toggleShift() {
