@@ -250,7 +250,7 @@ const Keyboard = {
         if (button.innerHTML.toLowerCase() == evt.key.toLowerCase()) {
           button.classList.add('active');
           if (this.properties.sound) {
-            this.elements.sounds.letters[this.properties.language].currentTime = 0;
+            this.elements.sounds.letters[this.properties.language].currentTime = 0.5;
             this.elements.sounds.letters[this.properties.language].play();
           }
         } else if (this.properties.shift) {
@@ -301,7 +301,7 @@ const Keyboard = {
           break;
         case 'CapsLock':
           if (this.properties.sound) {
-            this.elements.sounds.caps.currentTime = 0.4;
+            this.elements.sounds.caps.currentTime = 0.5;
             this.elements.sounds.caps.play();
           }
           this._toggleCapsLock();
@@ -494,7 +494,7 @@ const Keyboard = {
 
           keyElement.addEventListener('click', () => {
             if (this.properties.sound) {
-              this.elements.sounds.caps.currentTime = 0.4;
+              this.elements.sounds.caps.currentTime = 0.5;
               this.elements.sounds.caps.play();
             }
             this._toggleCapsLock();
@@ -525,7 +525,7 @@ const Keyboard = {
 
           keyElement.addEventListener('click', () => {
             if (this.properties.sound) {
-              this.elements.sounds.space.currentTime = 0.3;
+              this.elements.sounds.space.currentTime = 0.4;
               this.elements.sounds.space.play();
             }
             this.properties.value += ' ';
