@@ -288,9 +288,11 @@ const Keyboard = {
         case 'Shift':
           if (!evt.ctrlKey && !evt.altKey && !this.properties.shiftPressed) {
             this.properties.shiftPressed = true;
-            document.querySelector('.shift').classList.toggle('keyboard__key--active');
             document.querySelector('.shift').classList.add('active');
-            this._toggleShift();
+            if (!this.properties.shift) {
+              document.querySelector('.shift').classList.toggle('keyboard__key--active');
+              this._toggleShift();
+            }
           }
           break;
         case 'CapsLock':
@@ -639,7 +641,6 @@ const Keyboard = {
   },
 
   _toggleShift() {
-
     this.properties.shift = !this.properties.shift;
     let index = 0;
     for (const key of this.elements.keys) {
