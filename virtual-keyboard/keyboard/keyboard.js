@@ -161,16 +161,16 @@ const Keyboard = {
     this.elements.record = new SpeechRecognition();
 
     this.elements.record.interimResults = true;
-    this.elements.sounds.tab = new Audio('../../assets/si.mp3');
-    this.elements.sounds.caps = new Audio('../../assets/re.mp3');
-    this.elements.sounds.shift = new Audio('../../assets/mi.mp3');
-    this.elements.sounds.space = new Audio('../../assets/fa.mp3');
-    this.elements.sounds.backspace = new Audio('../../assets/lja.mp3');
-    this.elements.sounds.enter = new Audio('../../assets/sol.mp3');
-    this.elements.sounds.arrowLeft = new Audio('../../assets/70b088eeae5b483.mp3');
-    this.elements.sounds.arrowRight = new Audio('../../assets/70b088eeae5b483.mp3');
-    this.elements.sounds.letters[0] = new Audio('../../assets/noty-do.mp3');
-    this.elements.sounds.letters[1] = new Audio('../../assets/cement-floor-01.mp3');
+    this.elements.sounds.tab = new Audio('./assets/si.mp3');
+    this.elements.sounds.caps = new Audio('./assets/re.mp3');
+    this.elements.sounds.shift = new Audio('./assets/mi.mp3');
+    this.elements.sounds.space = new Audio('./assets/fa.mp3');
+    this.elements.sounds.backspace = new Audio('./assets/lja.mp3');
+    this.elements.sounds.enter = new Audio('./assets/sol.mp3');
+    this.elements.sounds.arrowLeft = new Audio('./assets/70b088eeae5b483.mp3');
+    this.elements.sounds.arrowRight = new Audio('./assets/70b088eeae5b483.mp3');
+    this.elements.sounds.letters[0] = new Audio('./assets/noty-do.mp3');
+    this.elements.sounds.letters[1] = new Audio('./assets/cement-floor-01.mp3');
     // Create main elements
     this.elements.main = document.createElement('div');
     this.elements.keysContainer = document.createElement('div');
