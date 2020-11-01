@@ -468,6 +468,10 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML('keyboard_arrow_up');
 
           keyElement.addEventListener('click', () => {
+            if (this.properties.sound) {
+              this.elements.sounds.shift.currentTime = 0.3;
+              this.elements.sounds.shift.play();
+            }
             this._toggleShift();
             keyElement.classList.toggle('keyboard__key--active', this.properties.shift);
           });
@@ -672,7 +676,7 @@ const Keyboard = {
       index++;
     }
 
-    if (this.properties.sound && this.properties.shift) {
+    if (this.properties.sound && this.properties.shiftPressed) {
       this.elements.sounds.shift.currentTime = 0.3;
       this.elements.sounds.shift.play();
     }
