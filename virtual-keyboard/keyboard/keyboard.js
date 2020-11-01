@@ -13,7 +13,8 @@ const Keyboard = {
       enter: null,
       arrowLeft: null,
       arrowRight: null,
-      letters: [ null, null ]
+      letters: [ null, null ],
+      recordText: []
     },
     record: null
   },
@@ -211,17 +212,17 @@ const Keyboard = {
       e.preventDefault();
     });
 
-    let text = [];
     this.elements.record.addEventListener('result', (evt) => {
-      text = Array.from(evt.results)
+      this.elements.recordText = Array.from(evt.results)
         .map((result) => result[0])
         .map((result) => result.transcript)
         .join('');
     });
 
     this.elements.record.addEventListener('end', () => {
-      document.querySelector('.use-keyboard-input').value = this.properties.value += text;
-      text = [];
+      document.querySelector('.use-keyboard-input').value = this.properties.value =
+        this.properties.value + this.elements.recordText + ' ';
+      this.elements.recordText = [];
       if (this.properties.mic) {
         this.elements.record.lang = this.properties.language ? 'ru-RU' : 'en-US';
         this.elements.record.start();
