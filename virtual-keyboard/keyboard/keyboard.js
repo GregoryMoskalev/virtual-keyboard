@@ -170,10 +170,10 @@ const Keyboard = {
     this.elements.sounds.space = new Audio('./assets/fa.mp3');
     this.elements.sounds.backspace = new Audio('./assets/lja.mp3');
     this.elements.sounds.enter = new Audio('./assets/sol.mp3');
-    this.elements.sounds.arrowLeft = new Audio('./assets/70b088eeae5b483.mp3');
-    this.elements.sounds.arrowRight = new Audio('./assets/70b088eeae5b483.mp3');
-    this.elements.sounds.letters[0] = new Audio('./assets/noty-do.mp3');
-    this.elements.sounds.letters[1] = new Audio('./assets/cement-floor-01.mp3');
+    this.elements.sounds.arrowLeft = new Audio('./assets/noty-do.mp3');
+    this.elements.sounds.arrowRight = new Audio('./assets/noty-do.mp3');
+    this.elements.sounds.letters[0] = new Audio('./assets/70b088eeae5b483.mp3');
+    this.elements.sounds.letters[1] = new Audio('./assets/e61cdb72dc8aa8c.mp3');
     // Create main elements
     this.elements.main = document.createElement('div');
     this.elements.keysContainer = document.createElement('div');
@@ -251,7 +251,7 @@ const Keyboard = {
         if (button.innerHTML.toLowerCase() == evt.key.toLowerCase()) {
           button.classList.add('active');
           if (this.properties.sound) {
-            this.elements.sounds.letters[this.properties.language].currentTime = 0.5;
+            this.elements.sounds.letters[this.properties.language].currentTime = 0;
             this.elements.sounds.letters[this.properties.language].play();
           }
         } else if (this.properties.shift) {
@@ -325,14 +325,14 @@ const Keyboard = {
           break;
         case 'ArrowLeft':
           if (this.properties.sound) {
-            this.elements.sounds.arrowLeft.currentTime = 0;
+            this.elements.sounds.arrowLeft.currentTime = 0.5;
             this.elements.sounds.arrowLeft.play();
           }
           document.querySelector('.arrowLeft').classList.add('active');
           break;
         case 'ArrowRight':
           if (this.properties.sound) {
-            this.elements.sounds.arrowRight.currentTime = 0;
+            this.elements.sounds.arrowRight.currentTime = 0.5;
             this.elements.sounds.arrowRight.play();
           }
           document.querySelector('.arrowRight').classList.add('active');
@@ -426,7 +426,7 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML('keyboard_arrow_left');
           keyElement.addEventListener('click', () => {
             if (this.properties.sound) {
-              this.elements.sounds.arrowLeft.currentTime = 0;
+              this.elements.sounds.arrowLeft.currentTime = 0.5;
               this.elements.sounds.arrowLeft.play();
             }
             this._arrowLeft();
@@ -437,7 +437,7 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML('keyboard_arrow_right');
           keyElement.addEventListener('click', () => {
             if (this.properties.sound) {
-              this.elements.sounds.arrowRight.currentTime = 0;
+              this.elements.sounds.arrowRight.currentTime = 0.5;
               this.elements.sounds.arrowRight.play();
             }
             this._rightArrow();
@@ -555,7 +555,7 @@ const Keyboard = {
 
           keyElement.addEventListener('click', () => {
             if (this.properties.sound) {
-              this.elements.sounds.letters[this.properties.language].currentTime = 0.5;
+              this.elements.sounds.letters[this.properties.language].currentTime = 0;
               this.elements.sounds.letters[this.properties.language].play();
             }
             this.properties.value += this.properties.capsLock
@@ -758,7 +758,7 @@ console.log(
   'font-size: 1px; padding: 160px 143px; line-height: 0; background: url("https://sun9-74.userapi.com/DjoL4F6_RqFFChpuQf3kkQ36MyEMfr2zJUgj1A/5ua4Ga3dykI.jpg"); background-size: 289px 385px; color: transparent;'
 );
 
-console.log('engL-DO');
+console.log('arrows-DO');
 console.log('caps-RE');
 console.log('shift-MI');
 console.log('space-FA');
